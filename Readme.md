@@ -3,7 +3,10 @@ NProgress
 
 Slim progress bars for Ajax'y applications. Inspired by Google, YouTube, and
 Medium.
+
 This repo will contain a pure JS version of rsantacruz's [NProgress](http://ricostacruz.com/nprogress).
+
+All info below may not be relevant anymore.
 
 Installation
 ------------
