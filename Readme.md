@@ -6,6 +6,8 @@ Medium.
 
 This repo will contain a pure JS version of rsantacruz's [NProgress](http://ricostacruz.com/nprogress). All info below will be revised soon.
 
+[![Status](https://secure.travis-ci.org/rstacruz/nprogress.png?branch=master)](http://travis-ci.org/rstacruz/nprogress) 
+
 Installation
 ------------
 
