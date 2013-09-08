@@ -30,6 +30,21 @@
           transform: rotate(3deg) translate(0px, -4px);
 }
 
+#nprogress .msg {
+    display: block;
+    position: fixed;
+    z-index: 100;
+    top: 9px;
+    right: 42px;
+    font-size: 18px;
+    color: #29d;
+    padding: 0px 6px 0px 6px;
+    text-shadow: 0px 0px 8px #29d;
+    font-family: source sans pro, sans-serif;
+    line-height: 1.5;
+}
+
+
 /* Remove these to get rid of the spinner */
 #nprogress .spinner {
   display: block;
