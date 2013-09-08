@@ -16,7 +16,7 @@
 })(function() {
   var NProgress = {};
 
-  NProgress.version = '0.1.2';
+  NProgress.version = '0.1.3';
 
   var Settings = NProgress.settings = {
     minimum: 0.08,
@@ -27,9 +27,10 @@
     trickleRate: 0.02,
     trickleSpeed: 800,
     showSpinner: true,
-    barSelector: '[role="bar"]',
-    spinnerSelector: '[role="spinner"]',
-    template: '<div class="bar" role="bar"><div class="peg"></div></div><div class="spinner" role="spinner"><div class="spinner-icon"></div></div>'
+    barId: 'nprogressbar',
+    spinnerId: 'nprogressspinner',
+    msgId: 'nprogressmsg',
+    template: '<div class="bar" id="nprogressbar"><div class="peg" id="nprogresspeg"></div></div><div class="msg" id="nprogressmsg"></div><div class="spinner" id="nprogressspinner"><div class="spinner-icon"></div></div>'
   };
 
   /**
@@ -62,14 +63,17 @@
    *     NProgress.set(1.0);
    */
 
-  NProgress.set = function(n) {
+  NProgress.set = function(n, t) {
     var started = NProgress.isStarted();
 
     n = clamp(n, Settings.minimum, 1);
     NProgress.status = (n === 1 ? null : n);
+    NProgress.msg = t?t:"";
 
     var progress = NProgress.render(!started),
-        bar      = progress.querySelector(Settings.barSelector),
+        bar      = findSubElementById(progress, Settings.barId),
+        msg      = NProgress.msg,
+        prmsg    = findSubElementById(progress, Settings.msgId),
         speed    = Settings.speed,
         ease     = Settings.easing;
 
@@ -81,6 +85,10 @@
 
       // Add transition
       css(bar, barPositionCSS(n, speed, ease));
+
+      if(prmsg) {
+          prmsg.innerHTML = (msg?msg:"");
+      }
 
       if (n === 1) {
         // Fade out
@@ -119,13 +127,13 @@
    *     NProgress.start();
    *
    */
-  NProgress.start = function() {
-    if (!NProgress.status) NProgress.set(0);
+  NProgress.start = function(t) {
+    if (!NProgress.status) NProgress.set(0, t);
 
     var work = function() {
       setTimeout(function() {
         if (!NProgress.status) return;
-        NProgress.trickle();
+        NProgress.trickle(NProgress.msg);
         work();
       }, Settings.trickleSpeed);
     };
@@ -157,23 +165,23 @@
    * Increments by a random amount.
    */
 
-  NProgress.inc = function(amount) {
+  NProgress.inc = function(amount, t) {
     var n = NProgress.status;
 
     if (!n) {
-      return NProgress.start();
+      return NProgress.start(t);
     } else {
       if (typeof amount !== 'number') {
         amount = (1 - n) * clamp(Math.random() * n, 0.1, 0.95);
       }
 
       n = clamp(n + amount, 0, 0.994);
-      return NProgress.set(n);
+      return NProgress.set(n, t);
     }
   };
 
-  NProgress.trickle = function() {
-    return NProgress.inc(Math.random() * Settings.trickleRate);
+  NProgress.trickle = function(t) {
+    return NProgress.inc(Math.random() * Settings.trickleRate, t);
   };
 
   /**
@@ -190,7 +198,7 @@
     progress.id = 'nprogress';
     progress.innerHTML = Settings.template;
 
-    var bar      = progress.querySelector(Settings.barSelector),
+    var bar      = findSubElementById(progress, Settings.barId),
         perc     = fromStart ? '-100' : toBarPerc(NProgress.status || 0),
         spinner;
     
@@ -200,7 +208,7 @@
     });
 
     if (!Settings.showSpinner) {
-      spinner = progress.querySelector(Settings.spinnerSelector);
+      spinner = findSubElementById(progress, Settings.spinnerId);
       spinner && removeElement(spinner);
     }
 
@@ -428,6 +436,22 @@
 
   function removeElement(element) {
     element && element.parentNode && element.parentNode.removeChild(element);
+  }
+
+  function findSubElementById(parent, id) {
+      for(var i = 0; i < parent.childNodes.length; i++) {
+          var ch = parent.childNodes[i];
+          if(ch.id === id){
+              return ch;
+          }
+
+          if(ch.childNodes && ch.childNodes.length) {
+              ch = findSubElementById(ch, id);
+              if(ch) return ch;
+          }
+      }
+
+      return null;
   }
 
   return NProgress;
