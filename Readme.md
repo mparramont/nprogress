@@ -6,7 +6,7 @@ Medium.
 
 This version has the ability to display a progress message next to the spinner (top right corner). All relevant functions (start(), set(), inc(), trickle()) have an additional property (msg) that can be any (HTML) string. You will definitely want to play with the CSS to make it look good on your site, but it looks just great on white background (has a glow to the text).
 
-This is also a pure pure JS version of rsantacruz's [NProgress](http://ricostacruz.com/nprogress), which comes form mparramont's fork (see link above). You do NOT need jQuery or any other JS library for this version.
+This is also a pure JS version of rsantacruz's [NProgress](http://ricostacruz.com/nprogress), which comes form mparramont's fork (see link above). You do NOT need jQuery or any other JS library for this version.
 
 [![Status](https://secure.travis-ci.org/rstacruz/nprogress.png?branch=master)](http://travis-ci.org/rstacruz/nprogress) 
 
