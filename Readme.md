@@ -4,7 +4,9 @@ NProgress
 Slim progress bars for Ajax'y applications. Inspired by Google, YouTube, and
 Medium.
 
-This repo will contain a pure JS version of rsantacruz's [NProgress](http://ricostacruz.com/nprogress). All info below will be revised soon.
+This version has the ability to display a progress message next to the spinner (top right corner). All relevant functions (start(), set(), inc(), trickle()) have an additional property (msg) that can be any (HTML) string. You will definitely want to play with the CSS to make it look good on your site, but it looks just great on white background (has a glow to the text).
+
+This is also a pure pure JS version of rsantacruz's [NProgress](http://ricostacruz.com/nprogress), which comes form mparramont's fork (see link above). You do NOT need jQuery or any other JS library for this version.
 
 [![Status](https://secure.travis-ci.org/rstacruz/nprogress.png?branch=master)](http://travis-ci.org/rstacruz/nprogress) 
 
@@ -19,7 +21,7 @@ Basic usage
 Simply call `start()` and `done()` to control the progress bar.
 
 ~~~ js
-NProgress.start();
+NProgress.start();  or NProgress.start("Uploading data");
 NProgress.done();
 ~~~
 
@@ -50,7 +52,7 @@ number between `0..1`.
 
 ~~~ js
 NProgress.set(0.0);     // Sorta same as .start()
-NProgress.set(0.4);
+NProgress.set(0.4, "Uploading form data");
 NProgress.set(1.0);     // Sorta same as .done()
 ~~~
 
@@ -59,7 +61,9 @@ increments it with a random amount. This will never get to 100%: use it for
 every image load (or similar).
 
 ~~~ js
-NProgress.inc();
+NProgress.inc();   
+NProgress.inc("default", "A little more"); 
+NProgress.inc(0.2, "20% more");
 ~~~
 
 __Force-done:__ By passing `true` to `done()`, it will show the progress bar
